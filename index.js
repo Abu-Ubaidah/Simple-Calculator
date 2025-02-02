@@ -1,123 +1,28 @@
-// let num = "";
-// let counter = 0;
-// let result = "Nan";
-// let operation = "";
-// let previousNum = "";
-// let cut= "";
-// function  CalFunc(num1,num2,operator) {
-//     switch(operator) {
-//         case '+':
-//             result = num1 + num2;
-//             break;
-//         case '-':
-//             result = num1 - num2;
-//             break;
-//         case '*':
-//             result = num1 * num2;
-//             break;
-//         case '/':
-//             if (num2 !== 0) {
-//                 result = num1 / num2;
-//             } else {
-//                 result = "Cannot divide by zero";
-//             }
-//             break;
-//         default:
-//             result = "NaN";
-//     }
-    
-//     return result;
-
-// }
- 
-
-// document.querySelectorAll("button").forEach((button) => {
-//   button.addEventListener("click", function () {
-    
-//     if (this.innerText == "cl") {
-//       document.getElementById("screen").innerText = ``;
-//       num = "";
-//       previousNum="";
-//       operation="";
-//     }
-
-//      else if (this.innerText == "x") {
-//        cut = num.length - 1;
-//       num = num.slice(0, cut);
-//       document.getElementById("screen").innerText = `${num}`;
-//     } 
-
-
-//     else if (this.innerText == "+" || this.innerText == "-"|| this.innerText == "*"|| this.innerText == "/") {
-//         counter ++;
-//         if(counter>1&&num==""){
-//             counter=0;
-//             alert("cannot use operator two times without putting any other value");
-            
-        
-//         }
-//         else{
-//         operation = this.innerText;
-//      previousNum = num;
-//       num ="";
-//       document.getElementById("screen").innerText = ``;
-      
-//     }
-      
-//     }
-
-//     else if (this.innerText == "=") {
-//         counter++;
-//         if (counter>2&&operation==""){
-            
-//             operation= "";
-//             alert("first choose operator to perform action");
-//             counter = counter-1
-//         }
-//         else{
-//        let num1 = parseFloat(previousNum);
-//         let num2 = parseFloat(num);
-//         let operator =operation;
-        
-
-//         document.getElementById("screen").innerText = `${CalFunc(num1,num2,operator)}`;
-//         console.log(num1,operator,num2,"=",result);
-//         num=result;
-//         operation="";
-//         }
-
-       
-//       }
-
-//     else {
-//       num = num + this.innerText;
-//       document.getElementById("screen").innerText = `${num}`;
-//     }
-    
-//   });
-// });
-
-// /*when a user click on a button it stores it and whenuser click on operater save previous number in a vairable and gets ready to store another variavle  it stores another number */
-
 let num = "";
 let result = null;
 let operation = "";
 let previousNum = "";
+let operatorClicked = false; // New flag to track repeated operator clicks
 
 function CalFunc(num1, num2, operator) {
+    let output;
     switch (operator) {
-        case '+': return (num1 + num2).toFixed(3);
-        case '-': return (num1 - num2).toFixed(3);
-        case '*': return (num1 * num2).toFixed(3);
-        case '÷': return num2 !== 0 ? (num1 / num2).toFixed(3) : "Cannot divide by zero";
+        case '+': output = num1 + num2; break;
+        case '-': output = num1 - num2; break;
+        case '*': output = num1 * num2; break;
+        case '÷': 
+            if (num2 === 0) return "Cannot divide by zero";
+            output = num1 / num2;
+            break;
         default: return "NaN";
     }
+    return Number.isInteger(output) ? output : parseFloat(output.toFixed(3)); // Remove unnecessary decimals
 }
-
 
 document.querySelectorAll("button").forEach((button) => {
     button.addEventListener("click", function () {
-        let screen = document.getElementById("screen");
+        let screenText = document.getElementById("screen-text");
+        let smallScreen = document.getElementById("small-screen");
         let btnValue = this.innerText;
 
         if (btnValue === "CL") { 
@@ -125,15 +30,22 @@ document.querySelectorAll("button").forEach((button) => {
             previousNum = "";
             operation = "";
             result = null;
-            screen.innerText = "";
+            operatorClicked = false; // Reset flag
+            screenText.innerText = "0";
+            smallScreen.innerText = "";
         } 
         
         else if (btnValue === "DEL") { 
             num = num.slice(0, -1);
-            screen.innerText = num || "0";
+            screenText.innerText = num || "0";
         } 
         
         else if (["+", "-", "*", "÷"].includes(btnValue)) {
+            if (operatorClicked) {
+                alert("You cannot enter two operators in a row!");
+                return;
+            }
+            
             if (num === "" && previousNum === "") {
                 alert("Enter a number first!");
                 return;
@@ -144,16 +56,18 @@ document.querySelectorAll("button").forEach((button) => {
                 let num1 = parseFloat(previousNum);
                 let num2 = parseFloat(num);
                 result = CalFunc(num1, num2, operation);
-                screen.innerText = result;
+                screenText.innerText = result;
                 previousNum = result.toString();
                 num = "";
             } else {
-                // If first time entering an operator
-                previousNum = num;
+                previousNum = num; // Store the first number
                 num = "";
             }
 
             operation = btnValue; // Store the new operator
+            smallScreen.innerText = `${previousNum} ${operation}`; // Update small screen
+            screenText.innerText = ""; // Clear main screen
+            operatorClicked = true; // Set flag to prevent double operator clicks
         } 
         
         else if (btnValue === "=") {
@@ -165,17 +79,21 @@ document.querySelectorAll("button").forEach((button) => {
             let num1 = parseFloat(previousNum);
             let num2 = parseFloat(num);
         
-            result = parseFloat(CalFunc(num1, num2, operation)); // Ensure it's a number
+            result = CalFunc(num1, num2, operation);
         
-            screen.innerText = result;
+            screenText.innerText = result;
+            smallScreen.innerText = `${previousNum} ${operation} ${num} =`; // Show full equation in small screen
+            
             num = result.toString();
             previousNum = "";
             operation = "";
+            operatorClicked = false; // Reset flag
         }
         
         else { 
             num += btnValue;
-            screen.innerText = num;
+            screenText.innerText = num;
+            operatorClicked = false; // Reset flag since a number is entered
         }
     });
 });

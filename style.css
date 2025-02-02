@@ -1,10 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
-
 body {
     align-items: center;
     text-align: center;
-    font-size: 50px;
+    font-size: 45px;
     font-family: "Orbitron", serif;
     font-optical-sizing: auto;
     font-style: normal;
@@ -16,51 +13,44 @@ body {
     display: flex;
     flex-direction: column;
     margin: auto;
-    width: 420px;
-    height: 650px;
+    width: 334px; 
+    height: 530px; 
     background-color: rgb(245, 245, 235);
     border-radius: 15px;
     box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
     overflow: hidden;
 }
 
-/* Slightly increased screen size */
+
 #screen {
     flex: 1;
     text-align: right;
-    width: 400px;
-    height: 320px;
-    padding: 10px;
-    font-size: 40px;
+    width: 282px; 
+    height: 120px; 
+    padding: 28px;
+    font-size: 35px; 
     background-color: black;
-    /* Change from bright "lime" to a softer green */
     color: #8FBC8F;
     border-bottom: 5px solid rgb(70, 70, 70);
-    display: flex;
     align-items: center;
     justify-content: flex-end;
-    overflow-x: auto;
-    overflow-y: hidden;
     white-space: nowrap;
     transition: box-shadow 0.3s ease-in-out;
+    overflow-x: auto;
+    overflow-y: hidden;
+
+}
+#screen>div{
+    font-size: small;
+    padding-top: 10px;
 }
 
-/* Hide scrollbar */
-#screen::-webkit-scrollbar {
-    display: none;
-}
+#screen-text {
+    font-size: 35px;
+    height: 35px; 
 
-/* Soft glow animation when updating screen */
-@keyframes glow {
-    0% { box-shadow: 0px 0px 5px lime; }
-    50% { box-shadow: 0px 0px 15px lime; }
-    100% { box-shadow: 0px 0px 5px lime; }
+    padding: 5px; 
 }
-
-#screen.active {
-    animation: glow 0.5s ease-in-out;
-}
-
 /* Buttons Section */
 #buttons {
     display: flex;
@@ -68,19 +58,20 @@ body {
     flex-direction: row-reverse;
     align-items: center;
     text-align: center;
-    width: 400px;
-    height: 500px;
+    width: 315px; 
+    height: 400px; 
     background: linear-gradient(135deg, rgb(140, 150, 150), rgb(120, 130, 130));
-    padding: 10px;
-    gap: 13px;
+    padding: 8px;
+    padding-right: 11px;
+    gap: 10px; /* Adjusted spacing */
 }
 
 .btns {
-    width: 90px;
-    height: 90px;
-    font-size: 26px;
+    width: 70px; 
+    height: 70px; 
+    font-size: 20px; 
     font-weight: 600;
-    border-radius: 10px;
+    border-radius: 8px;
     cursor: pointer;
     transition: transform 0.2s ease-in-out, background-color 0.3s ease;
 }
@@ -95,31 +86,31 @@ body {
     transform: scale(0.9);
 }
 
-/* Operator buttons - less bright green */
+/* Operator buttons */
 .operator {
     font-weight: 550;
-    font-size: 26px;
-    background-color: rgb(40, 120, 40);
+    font-size: 20px;
+    background-color:rgb(200, 120, 30);
     color: white;
     transition: background 0.3s ease;
 }
 
 .operator:hover {
-    background-color: rgb(50, 140, 50);
+    background-color: rgb(220, 140, 50);
 }
 
-/* Equals button - softer orange */
+/* Equals button */
 .equals {
-    background-color: rgb(200, 120, 30);
+    background-color:  rgb(40, 120, 40);;
     color: white;
     transition: background 0.3s ease;
 }
 
 .equals:hover {
-    background-color: rgb(220, 140, 50);
+    background-color: rgb(50, 140, 50);
 }
 
-/* Clear and Delete buttons - muted red */
+/* Clear and Delete buttons */
 .clear, .del {
     background-color: rgb(180, 50, 50);
     color: white;
@@ -132,7 +123,7 @@ body {
 
 /* Number buttons */
 button {
-    font-size: 22px;
+    font-size: 18px; /* Adjusted font size */
     font-weight: bold;
     background-color: rgb(225, 230, 235);
     border: 0;
